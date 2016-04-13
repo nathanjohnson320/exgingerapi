@@ -45,7 +45,7 @@ defmodule Exgingerapi do
 
         # Run each sentence through the grammar check
         Enum.map(text, fn(sentence) -> Task.async(fn -> Enum.join(sentence, " ") |> check_grammar end) end)
-        |> Enum.map(&Task.await(&1, 10000))
+        |> Enum.map(&Task.await(&1, 30000))
         |> List.flatten()
     end
   end
