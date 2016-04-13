@@ -1,6 +1,7 @@
 defmodule Exgingerapi do
 
   @base_url "http://services.gingersoftware.com/Ginger/correct/json/GingerTheText?lang=US&clientVersion=2.0&apiKey=6ae0c3a0-afdc-4532-a810-82ded0054236&text="
+  @words_per_request 40
 
   # Check the grammar of given text
   def check_grammar(text) do
@@ -41,7 +42,7 @@ defmodule Exgingerapi do
 				text = text |> String.replace(~r/[^A-Za-z0-9 ]/, "")
 				|> String.downcase
 				|> String.split
-				|> Enum.chunk(35)
+				|> Enum.chunk(@words_per_request)
 
         # Run each sentence through the grammar check
         Enum.map(text, fn(sentence) -> Task.async(fn -> Enum.join(sentence, " ") |> check_grammar end) end)
