@@ -5,6 +5,7 @@ defmodule Exgingerapi.Mixfile do
     [app: :exgingerapi,
      version: "0.0.1",
      elixir: "~> 1.2",
+     description: "Elixir wrapper for ginger proofreading API (english)",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
@@ -30,6 +31,14 @@ defmodule Exgingerapi.Mixfile do
     [
       {:httpoison, "~> 0.8.0"},
       {:poison, "~> 2.0.1"}
+    ]
+  end
+
+  defp package do
+    [
+      maintainers: ["Nathan Johnson"],
+      licenses: ["BSD"],
+      links: %{"GitHub" => "https://github.com/nathanjohnson320/exgingerapi"}
     ]
   end
 end
