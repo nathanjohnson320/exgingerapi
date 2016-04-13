@@ -9,8 +9,8 @@ defmodule Exgingerapi do
     cond do
       String.length(text) < 600 ->
 
-        # Send the request
-        {:ok, %HTTPoison.Response{body: body, headers: _, status_code: _}} = HTTPoison.get(@base_url <> URI.encode(text), [], [recv_timeout: :infinity])
+      # Send the request
+      {:ok, %HTTPoison.Response{body: body, headers: _, status_code: _}} = HTTPoison.get(@base_url <> URI.encode(text), [], [recv_timeout: :infinity])
 
         # Decode the json response
         case Poison.decode(body) do
@@ -30,18 +30,21 @@ defmodule Exgingerapi do
                 end
 
                 # Replace _ with _
-                %{"Replace" => String.slice(text, from, to), "With" => top_suggestion["Text"]}
+                %{"Replace" => String.slice(text, Range.new(from, to)), "With" => top_suggestion["Text"]}
               end
-              result
+              result |> Enum.filter(fn(issue) -> String.downcase(issue["Replace"]) != String.downcase(issue["With"]) end)
           _ ->
               {:error, "Could not match"}
         end
       String.length(text) >= 600 ->
         # Split the string into sentences
-        text = String.split(text, ~r/[.\!\?]/, trim: true)
+				text = text |> String.replace(~r/[^A-Za-z0-9 ]/, "")
+				|> String.downcase
+				|> String.split
+				|> Enum.chunk(35)
 
         # Run each sentence through the grammar check
-        Enum.map(text, fn(sentence) -> Task.async(fn -> check_grammar(sentence) end) end)
+        Enum.map(text, fn(sentence) -> Task.async(fn -> Enum.join(sentence, " ") |> check_grammar end) end)
         |> Enum.map(&Task.await(&1, 10000))
         |> List.flatten()
     end
