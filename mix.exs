@@ -6,6 +6,7 @@ defmodule Exgingerapi.Mixfile do
      version: "0.0.1",
      elixir: "~> 1.2",
      description: "Elixir wrapper for ginger proofreading API (english)",
+     package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
