@@ -45,7 +45,7 @@ defmodule Exgingerapi do
         end
       String.length(text) >= 600 ->
         # Split the string into sentences
-				text = text |> String.replace(~r/[^A-Za-z0-9 ]/, "")
+				text = text |> String.replace(~r/[^A-Za-z0-9 ]/, " ")
 				|> String.downcase
 				|> String.split
 				|> Enum.chunk(@words_per_request)
