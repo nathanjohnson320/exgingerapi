@@ -3,7 +3,7 @@ defmodule Exgingerapi.Mixfile do
 
   def project do
     [app: :exgingerapi,
-     version: "0.0.3",
+     version: "0.0.4",
      elixir: "~> 1.2",
      description: "Elixir wrapper for ginger proofreading API (english)",
      package: package,
@@ -37,7 +37,7 @@ defmodule Exgingerapi.Mixfile do
 
   defp package do
     [
-      maintainers: ["Nathan Johnson"],
+      maintainers: ["Nathan Johnson", "Ryan Weber"],
       licenses: ["BSD"],
       links: %{"GitHub" => "https://github.com/nathanjohnson320/exgingerapi"}
     ]
