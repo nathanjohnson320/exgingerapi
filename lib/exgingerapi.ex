@@ -31,15 +31,8 @@ defmodule Exgingerapi do
                 end
 
                 # Replace _ with _
-                %{"Replace" => String.slice(text, Range.new(from, to)), "With" => top_suggestion["Text"]}
+                %{"Replace" => String.slice(text, Range.new(from, to)) |> String.downcase(), "With" => top_suggestion["Text"] |> String.downcase()}
               end
-              result |> Enum.filter(fn(issue) ->
-                if not is_nil(issue["Replace"]) and not is_nil(issue["With"]) do
-                  String.downcase(issue["Replace"]) != String.downcase(issue["With"])
-                else
-                  false
-                end
-              end)
           _ ->
               {:error, "Could not match"}
         end
