@@ -3,7 +3,7 @@ defmodule Exgingerapi.Mixfile do
 
   def project do
     [app: :exgingerapi,
-     version: "0.0.5",
+     version: "0.0.6",
      elixir: "~> 1.2",
      description: "Elixir wrapper for ginger proofreading API (english)",
      package: package,
