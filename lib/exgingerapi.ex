@@ -31,17 +31,29 @@ defmodule Exgingerapi do
                 end
 
                 # Replace _ with _
-                %{"Replace" => String.slice(text, Range.new(from, to)) |> String.downcase(), "With" => top_suggestion["Text"] |> String.downcase()}
+                replace = if not is_nil(String.slice(text, Range.new(from, to))) do
+                  String.slice(text, Range.new(from, to)) |> String.downcase()
+                else
+                  ""
+                end
+
+                replacement = if not is_nil(top_suggestion["Text"]) do
+                   top_suggestion["Text"] |> String.downcase()
+                else
+                  ""
+                end
+
+                %{"Replace" => replace, "With" => replacement}
               end
           _ ->
               {:error, "Could not match"}
         end
       String.length(text) >= 600 ->
         # Split the string into sentences
-				text = text |> String.replace(~r/[^A-Za-z0-9 ]/, " ")
-				|> String.downcase
-				|> String.split
-				|> Enum.chunk(@words_per_request)
+		text = text |> String.replace(~r/[^A-Za-z0-9 ]/, " ")
+		|> String.downcase
+		|> String.split
+		|> Enum.chunk(@words_per_request)
 
         # Run each sentence through the grammar check
         Enum.map(text, fn(sentence) -> Task.async(fn -> Enum.join(sentence, " ") |> check_grammar end) end)
